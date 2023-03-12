@@ -3,9 +3,7 @@ using Domain.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using System.Security.Claims;
-using System.Text;
 
 namespace Application.Services;
 public class AuthenticationStateProvider : IAuthenticationStateProvider
@@ -23,7 +21,7 @@ public class AuthenticationStateProvider : IAuthenticationStateProvider
     {
         var claims = new List<Claim>();
         claims.Add(new Claim(ClaimTypes.Email, user.Email));
-        claims.Add(new Claim(ClaimTypes.Name, user.Email.Split('@').First()));
+        claims.Add(new Claim(ClaimTypes.Name, user.Username));
 
         foreach (var role in user?.ApplicationRoles ?? new List<IApplicationRole>())
             claims.Add(new Claim(ClaimTypes.Role, role.GetType().Name));

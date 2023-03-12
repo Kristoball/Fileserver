@@ -1,13 +1,7 @@
 ﻿using Domain.Services;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace Fileserver.Controllers;
 
@@ -22,6 +16,7 @@ public class AccountController : Controller
         _authenticationStateProvider = authenticationStateProvider;
         _httpContextAccessor = httpContextAccessor;
     }
+
     public IActionResult Index()
     {
         return View();
