@@ -1,0 +1,15 @@
+﻿@using Application.Models
+@using Domain.Services
+@using Newtonsoft.Json
+@inject IAuthenticationStateProvider auth;
+@{
+    Layout = "_Layout";
+    var user = (await auth.GetClaimsPrincipal());
+}
+
+<h1>Test</h1>
+<div>
+    <h1>user: @(user.Identity.Name)</h1>
+    <p>@JsonConvert.SerializeObject(user.Claims.Select(x=>new {x.Type, x.Value}))</p>
+    <p>is in admin role: @user.IsInRole(nameof(Admin))</p>
+</div>

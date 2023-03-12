@@ -1,2 +1,6 @@
 .vs/**
 .vs/*
+.vs/Fileserver/v17/.suo
+
+**/bin/**/*
+**/obj/**/*
