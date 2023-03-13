@@ -23,3 +23,5 @@ Use cases:
 - [ ] Folder max size
 - [ ] Full administration panel (features?)
 - [ ] Mailsender for account verification and notification about folder expiration and deletion
+- [ ] Make all userinput fields stripped of potentially dangerous text
+- [ ] Make sure fileSafety is good enough (Do not save file to application folder, do not allow file to be executed by server process ++)
