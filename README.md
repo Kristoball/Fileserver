@@ -6,7 +6,7 @@ Use cases:
 - Small businesses to share project file with a third party vendor.
 
 ## To implement:
-- [x] Login
+- [x] ~~Login~~
 - [ ] Register
 - [ ] Role based access
 - [ ] Possibillity to create a folder
