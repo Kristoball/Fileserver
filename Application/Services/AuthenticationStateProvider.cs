@@ -22,6 +22,7 @@ public class AuthenticationStateProvider : IAuthenticationStateProvider
         var claims = new List<Claim>();
         claims.Add(new Claim(ClaimTypes.Email, user.Email));
         claims.Add(new Claim(ClaimTypes.Name, user.Username));
+        claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
 
         foreach (var role in user?.ApplicationRoles ?? new List<IApplicationRole>())
             claims.Add(new Claim(ClaimTypes.Role, role.GetType().Name));

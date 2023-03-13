@@ -17,12 +17,12 @@ public class FileServer
 
         AddDefaultServices(builder.Services);
         AddServices(builder.Services);
-        builder.Services.AddMenuItem(x =>
-        {
-            x.Name = "Upload";
-            x.AddRole(new Admin());
-            x.Url = "/Upload";
-        });
+        //builder.Services.AddMenuItem(x =>
+        //{
+        //    x.Name = "Upload";
+        //    x.AddRole(new Admin());
+        //    x.Url = "/Upload";
+        //});
 
         _app = builder.Build();
 
@@ -72,6 +72,7 @@ public class FileServer
         services.AddScoped<IAuthenticationStateProvider, AuthenticationStateProvider>();
         services.AddSingleton<IHashingAlgorithm, HashingAlgorithm>(); //temp singleton for IApplicationSecurity
         services.AddSingleton<IApplicationSecurity, ApplicationSecurity>(); //temp Singleton for in-memory data save
+        services.AddTransient<IBlobProvider, BlobProvider>();
     }
 
     private void Configure(WebApplication app)
@@ -104,6 +105,6 @@ public static class MenuBuilder
     {
         var menuItem = new MenuItem();
         action(menuItem);
-        services.AddTransient<IMenuItem>(_=> menuItem);
+        services.AddTransient<IMenuItem>(_ => menuItem);
     }
 }

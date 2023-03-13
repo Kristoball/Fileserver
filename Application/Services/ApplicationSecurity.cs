@@ -7,14 +7,14 @@ namespace Application.Services;
 public class ApplicationSecurity : IApplicationSecurity
 {
     private readonly IHashingAlgorithm _hashingAlgorithm;
-    private IList<IUser> _user = new List<IUser>() { 
-        new User() { Active = true, Email="test", CustomerRoles = new List<IUserRole> { new AdminUser() }, Username = "kristofferE", Password = "test"} ,
-        new User() { Active = true, Email="test2", CustomerRoles = new List<IUserRole> { new SubAdminUser() }, Username = "kristoffer", Password = "test"} ,
-    };
+    private IList<IUser> _user = new List<IUser>();
 
     public ApplicationSecurity(IHashingAlgorithm hashingAlgorithm)
     {
         _hashingAlgorithm = hashingAlgorithm;
+
+        _user.Add(new User() { Active = true, Email = "test", CustomerRoles = new List<IUserRole> { new AdminUser() }, Username = "Kristoffer E.", Password = _hashingAlgorithm.HashString("test") });
+        _user.Add(new User() { Active = true, Email = "test2", CustomerRoles = new List<IUserRole> { new SubAdminUser() }, Username = "Kristoffer", Password = _hashingAlgorithm.HashString("test") });
     }
 
     public async Task<IUser?> GetUser(string email)

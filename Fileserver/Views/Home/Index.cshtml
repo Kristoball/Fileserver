@@ -1,15 +1,20 @@
-﻿@using Application.Models
-@using Domain.Services
-@using Newtonsoft.Json
-@inject IAuthenticationStateProvider auth;
+﻿@model FolderViewModel
+
+@using Fileserver.ViewModels.Home
+
 @{
     Layout = "_Layout";
-    var user = (await auth.GetClaimsPrincipal());
 }
-
-<h1>Test</h1>
-<div>
-    <h1>user: @(user.Identity.Name)</h1>
-    <p>@JsonConvert.SerializeObject(user.Claims.Select(x=>new {x.Type, x.Value}))</p>
-    <p>is in admin role: @user.IsInRole(nameof(Admin))</p>
+<div class="card">
+    <div class="card-header">
+        @if (Model.Current != null)
+        {
+            <h1>@(Model.Current.Name)</h1>
+            <small class="text-muted">Created: @Model.Current.Created</small>
+        }
+        
+    </div>
+    <div class="card-body">
+        Show all subfolders/files
+    </div>
 </div>
