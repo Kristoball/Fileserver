@@ -9,11 +9,12 @@ Use cases:
 - [x] ~~Login~~
 - [ ] Register
 - [ ] Role based access
-- [ ] Possibillity to create a folder
+- [x] ~~Possibillity to create a folder~~
 - [ ] Possibillity to set a password for fileupload by unauthenticated users or authenticated users that is now the admin profile of the folder
-- [ ] Upload files
+- [x] ~~Upload files~~
 - [ ] Delete files
-- [ ] Download files
+- [x] ~~Download files~~
+- [x] ~~Preview files (partially)~~
 
 ## Future work:
 - [ ] Set expiration for a folder
