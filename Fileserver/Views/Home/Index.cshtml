@@ -1,9 +1,12 @@
 ﻿@model FolderViewModel
 
+@using Domain.Models
+@using Domain.Services
 @using Fileserver.ViewModels.Home
-
+@inject IAuthenticationStateProvider authProvider
 @{
     Layout = "_Layout";
+    var user = await authProvider.GetClaimsPrincipal();
 }
 <div class="card">
     <div class="card-header">
@@ -12,9 +15,120 @@
             <h1>@(Model.Current.Name)</h1>
             <small class="text-muted">Created: @Model.Current.Created</small>
         }
-        
+        @if (user.Identity?.IsAuthenticated ?? false)
+        {
+
+            @if (Model.Current is IFolder || Model.Current is null)
+            {
+                <button type="button" class="btn float-right btn-primary" data-toggle="modal" data-target="#createFolder">
+                    +
+                </button>
+            }
+            @if (Model.Current is IFolder)
+            {
+                <button type="button" class="btn float-right btn-success mr-2" data-toggle="modal" data-target="#uploadFiles">
+                    Add files +
+                </button>
+            }
+            else if (Model.Current is not null)
+            {
+                <a class="btn float-right btn-info mr-2" href="@Url.Action("GetFile", "Home", new {id=@Model.Current.Id})">
+                    Download File
+                </a>
+            }
+        }
     </div>
-    <div class="card-body">
-        Show all subfolders/files
+    <div class="card-body" style="max-height:65vh; overflow-y: scroll">
+        <ul class="list-group">
+            @if (@Model.CanAccessParent && Model.Current?.ParentId != null)
+            {
+                <a href="@Url.Action("Index", "Home", new {folderId = Model.Current?.ParentId})">
+                <li class="list-group-item">..</li></a>
+            }
+
+            @if (Model.Current is IFolder || Model.Current is null)
+            {
+                @if (Model.Blobs.Any()) foreach (var blob in Model.Blobs)
+                    {
+                        <a href="@Url.Action("Index", "Home", new {folderId = blob.Id})">
+                        <li class="list-group-item">@blob.Name <span class="badge badge-success">@(blob.FileType)</span></li></a>
+                    }
+                else
+                {
+                    <li class="list-group-item">No file or folder available</li>
+                }
+            }
+            else if (Model.Current is not null)
+            {
+                if (Model.Current.FileType.StartsWith("image/"))
+                {
+                    <li class="list-group-item h-100"><img class="w-100" src="@Url.Action("GetFile", "Home", new {id=@Model.Current.Id, download = false})" /></li>
+                }
+                else if (Model.Current.FileType.StartsWith("application/pdf"))
+                {
+                    <li class="list-group-item">
+                        <embed class="w-100" style="min-height:500px" src="@Url.Action("GetFile", "Home", new {id=@Model.Current.Id, download = false})" type="application/pdf">
+                    </li>
+                }
+                else
+                {
+                    <li class="list-group-item">No preview avaiulable for file of type "@Model.Current.FileType"</li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="modal fade" id="createFolder" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createFolderLabel">Create new folder</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("AddFolder", "Home", method: FormMethod.Post))
+                {
+                    <div class="modal-body">
+                        <input name="parentFolder" type="hidden" value="@Model.Current?.Id">
+                        <div class="form-group">
+                            <label for="folderName">FolderName</label>
+                            <input type="text" name="folderName" id="folderName" class="form-control" placeholder="Name..." />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Folder Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Create</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uploadFiles" tabindex="-1" role="dialog" aria-labelledby="#uploadFilesLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadFilesLabel">Upload file</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("AddFile", "Home", method: FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+                {
+                    <div class="modal-body">
+                        <input name="parentFolder" type="hidden" value="@Model.Current?.Id">
+                        <input type="file" name="files" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Upload</button>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </div>

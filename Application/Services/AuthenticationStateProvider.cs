@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace Application.Services;
+namespace Infrastructure.Services;
 public class AuthenticationStateProvider : IAuthenticationStateProvider
 {
     private readonly IHttpContextAccessor _contextAccessor;

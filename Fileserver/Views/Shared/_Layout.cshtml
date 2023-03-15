@@ -1,4 +1,4 @@
-﻿@using Application.Models
+﻿@using Infrastructure.Models
 @using Domain.Models
 @using Domain.Services
 @inject IAuthenticationStateProvider authProvider
@@ -47,7 +47,7 @@
                         }
                     </ul>
                     <ul class="navbar-nav">
-                        <span class="navbar-text text-success">
+                        <span class="navbar-text text-white">
                             Welcome @user.Identity.Name!
                         </span>
                         <li class="nav-item">

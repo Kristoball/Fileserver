@@ -1,4 +1,4 @@
-﻿@using Application.Models
+﻿@using Infrastructure.Models
 @using Domain.Services
 @inject IAuthenticationStateProvider authProvider
 @{
@@ -17,8 +17,4 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
     }
-    <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Fileserver</p>
-    </footer>
 </div>

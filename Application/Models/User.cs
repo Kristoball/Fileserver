@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Domain.Services;
 
-namespace Application.Models;
+namespace Infrastructure.Models;
 
 public class User : IUser
 {
@@ -18,6 +18,6 @@ public class User : IUser
 
     public bool CheckPassword(IHashingAlgorithm algorithm, string password)
     {
-        return algorithm.HashString(Password) == password;
+        return Password == algorithm.HashString(password);
     }
 }

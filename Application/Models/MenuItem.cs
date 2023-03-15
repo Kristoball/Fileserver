@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace Application.Models
+namespace Infrastructure.Models
 {
     public class MenuItem : IMenuItem
     {

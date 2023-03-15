@@ -8,4 +8,5 @@ public interface IBlob
     public string CreatedBy { get; set; }
     public DateTime Created { get; set; }
     public Guid ParentId { get; set; }
+    public string FileType { get; }
 }

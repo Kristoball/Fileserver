@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Application.Services;
+namespace Infrastructure.Services;
 public class HashingAlgorithm : IHashingAlgorithm
 {
 	public string HashString(string clearText)

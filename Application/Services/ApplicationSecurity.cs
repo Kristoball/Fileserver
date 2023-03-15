@@ -1,9 +1,9 @@
 ﻿
-using Application.Models;
+using Infrastructure.Models;
 using Domain.Models;
 using Domain.Services;
 
-namespace Application.Services;
+namespace Infrastructure.Services;
 public class ApplicationSecurity : IApplicationSecurity
 {
     private readonly IHashingAlgorithm _hashingAlgorithm;

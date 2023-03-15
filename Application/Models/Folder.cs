@@ -1,9 +1,19 @@
 ﻿using Domain.Models;
 
-namespace Application.Models;
+namespace Infrastructure.Models;
 
-internal class Folder : IFolder
+public class Folder : IFolder
 {
+    public Folder(string folderName, string password, Guid ownerId, Guid parentId, string createdBy)
+    {
+        Name = folderName;
+        Password = password;
+        Id = Guid.NewGuid();
+        Created = DateTime.UtcNow;
+        OwnerUserId = ownerId;
+        ParentId = parentId;
+        CreatedBy = createdBy;
+    }
     public string Name { get; set; } = String.Empty;
     public string Description { get; set; } = String.Empty;
     public string Password { get; set; } = String.Empty;
@@ -14,4 +24,5 @@ internal class Folder : IFolder
     public DateTime Created { get; set; }
     public Guid OwnerUserId { get; set; }
     public Guid ParentId { get; set; }
+    public string FileType => "folder";
 }

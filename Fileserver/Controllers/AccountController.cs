@@ -23,8 +23,12 @@ public class AccountController : Controller
     }
 
     [AllowAnonymous]
-    public IActionResult Login()
+    public async Task<IActionResult> Login()
     {
+        if((await _authenticationStateProvider.GetClaimsPrincipal()).Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Index", "Home");
+        }
         return View();
     }
 
@@ -38,6 +42,7 @@ public class AccountController : Controller
         
         return RedirectToAction("Index", "Home");
     }
+
     [Authorize]
     public async Task<IActionResult> Logout()
     {

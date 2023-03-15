@@ -1,5 +1,5 @@
-using Application.Models;
-using Application.Services;
+using Infrastructure.Models;
+using Infrastructure.Services;
 using Domain.Models;
 using Domain.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -69,10 +69,11 @@ public class FileServer
     {
         services.AddHttpContextAccessor();
 
-        services.AddScoped<IAuthenticationStateProvider, AuthenticationStateProvider>();
+        services.AddSingleton<IAuthenticationStateProvider, AuthenticationStateProvider>();
         services.AddSingleton<IHashingAlgorithm, HashingAlgorithm>(); //temp singleton for IApplicationSecurity
         services.AddSingleton<IApplicationSecurity, ApplicationSecurity>(); //temp Singleton for in-memory data save
-        services.AddTransient<IBlobProvider, BlobProvider>();
+        services.AddSingleton<IBlobProvider, BlobProvider>();
+        services.AddSingleton<IFilestore, MemoryFilestore>();
     }
 
     private void Configure(WebApplication app)
