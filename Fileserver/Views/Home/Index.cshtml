@@ -42,7 +42,9 @@
         <ul class="list-group">
             @if (@Model.CanAccessParent && Model.Current?.ParentId != null)
             {
-                <a href="@Url.Action("Index", "Home", new {folderId = Model.Current?.ParentId})">
+                Guid? parentFolderId = (Model.Current?.ParentId ?? Guid.Empty) == Guid.Empty ? null:Model.Current.ParentId;
+
+                <a href = "@Url.Action("Index", "Home", new {folderId =  parentFolderId})" >
                 <li class="list-group-item">..</li></a>
             }
 
