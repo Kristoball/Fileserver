@@ -11,9 +11,14 @@ namespace Infrastructure.Services
     {
         private IList<FileStoreFile> _files = new List<FileStoreFile>();
         
-        public Task Delete(string path, string fileName)
+        public async Task Delete(string path)
         {
-            throw new NotImplementedException();
+            var id = path.Split('/').Last();
+            var filesToRemove = _files.Where(x => x.Path.Contains(id)).ToList();
+            foreach (var file in filesToRemove)
+                _files.Remove(file);
+            
+            await Task.CompletedTask;
         }
 
         public async Task Get(string path, MemoryStream streamToCopyTo)

@@ -10,11 +10,12 @@ namespace Domain.Services;
 public interface IBlobProvider
 {
 
-    public Task<IBlob> Blob(Guid id);
-    public Task<IEnumerable<IBlob>> Blobs(Guid? parentFolder = null);
-    public Task<IBlob> AddBlob(IBlob folder);
-    public Task EditBlob(IBlob folder);
-    public Task DeleteBlob(IBlob blob);
-    public Task DownloadBlob(IBlob blob);
-    public Task<string> GetPath(Guid blobId);
+    Task<IBlob> Blob(Guid id);
+    Task<IEnumerable<IBlob>> Blobs(Guid? parentFolder = null);
+    Task<IBlob> AddBlob(IBlob folder);
+    Task EditBlob(IBlob folder);
+    Task DeleteBlob(Guid id);
+    Task DownloadBlob(IBlob blob);
+    Task<string> GetPath(Guid blobId);
+    Task<IList<IBlob>> GetChildren(Guid id);
 }

@@ -36,9 +36,24 @@ public class BlobProvider : IBlobProvider
         return await Task.FromResult(folder);
     }
 
-    public Task DeleteBlob(IBlob blob)
+    public async Task DeleteBlob(Guid id)
     {
-        throw new NotImplementedException();
+        var blobsToRemoveFound = _blobs.Where(x => x.ParentId == id).ToList();
+        var blobsToRemove = new List<IBlob>();
+        while (blobsToRemoveFound.Any())
+        {
+            var blob = blobsToRemoveFound.First();
+            if (blob is IFolder)
+                blobsToRemoveFound.AddRange(_blobs.Where(x => x.ParentId == blob.Id));
+            blobsToRemove.Add(blob);
+            blobsToRemoveFound.Remove(blob);
+        }
+
+        foreach(var blob in blobsToRemove)
+            _blobs.Remove(blob);
+
+        _blobs.Remove(_blobs.Single(x => x.Id == id));
+        await Task.CompletedTask;
     }
 
     public Task DownloadBlob(IBlob blob)
@@ -64,5 +79,20 @@ public class BlobProvider : IBlobProvider
         path = (await _authenticationStateProvider.GetClaimsPrincipal()).Claims.First(x => x.Type == ClaimTypes.Sid).Value + path;
 
         return path;
+    }
+
+    public async Task<IList<IBlob>> GetChildren(Guid id)
+    {
+        List<IBlob> children = new List<IBlob>();
+        var x = _blobs.Where(x => x.ParentId == id).ToList();
+        while (x.Any())
+        {
+            var blob = x.First();
+            children.Add(blob);
+            x.AddRange(_blobs.Where(x=>x.ParentId == blob.Id));
+            x.Remove(blob);
+        }
+
+        return await Task.FromResult(children);
     }
 }

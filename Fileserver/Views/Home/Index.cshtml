@@ -53,7 +53,7 @@
                 @if (Model.Blobs.Any()) foreach (var blob in Model.Blobs)
                     {
                         <a href="@Url.Action("Index", "Home", new {folderId = blob.Id})">
-                        <li class="list-group-item">@blob.Name <span class="badge badge-success">@(blob.FileType)</span></li></a>
+                        <li class="list-group-item">@blob.Name <span class="badge badge-success">@(blob.FileType)</span> @Html.ActionLink("VerifyDelete", "VerifyDelete", "Home",routeValues: new {id=blob.Id} ,htmlAttributes:new {@class="btn btn-danger float-right"})</li></a>
                     }
                 else
                 {
@@ -123,7 +123,7 @@
                 {
                     <div class="modal-body">
                         <input name="parentFolder" type="hidden" value="@Model.Current?.Id">
-                        <input type="file" name="files" />
+                        <input type="file" multiple name="files" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

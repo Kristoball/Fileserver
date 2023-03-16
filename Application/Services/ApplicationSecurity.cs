@@ -23,6 +23,12 @@ public class ApplicationSecurity : IApplicationSecurity
         return await Task.FromResult(user);
     }
 
+    public async Task RegisterUser(string userName, string name, string password)
+    {
+        _user.Add(new User() { Active = true, Email = userName, Id = Guid.NewGuid(), Username = name, Password = _hashingAlgorithm.HashString(password), CustomerRoles = new List<IUserRole>()});
+        await Task.CompletedTask;
+    }
+
     public async Task<IUser?> ValidateUser(string email, string password)
     {
         var result = await GetUser(email);

@@ -10,5 +10,5 @@ public interface IFilestore
 {
     public Task Upload(MemoryStream file, string path);
     public Task Get(string path, MemoryStream streamToCopyTo);
-    public Task Delete(string path, string fileName);
+    public Task Delete(string path);
 }

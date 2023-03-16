@@ -1,0 +1,17 @@
+﻿@model IBlob
+@using Domain.Models;
+@using Domain.Services;
+@inject IAuthenticationStateProvider authProvider
+@{
+    Layout = "_Layout";
+    var user = await authProvider.GetClaimsPrincipal();
+}
+
+<div class="w-75 ml-auto mr-auto card">
+    @using (Html.BeginForm("Delete", "Home", method: FormMethod.Post, htmlAttributes: new { @class = "card-body" }))
+    {
+        <input type="hidden" name="id" id="id" value="@Model.Id" />
+        <h1>Are you sure you want to delete item @Model.Name</h1>
+        <button type="submit" class="btn btn-danger">Delete</button> @Html.ActionLink("Decline", "Index", "Home", htmlAttributes: new{ @class="btn btn-primary"})
+    }
+</div>

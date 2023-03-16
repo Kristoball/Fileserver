@@ -83,5 +83,49 @@ namespace Fileserver.Controllers
                 return File(ms, blob.FileType);
             }
         }
+
+        public async Task<IActionResult> VerifyDelete(Guid id)
+        {
+            var blob = await _blobProvider.Blob(id);
+            return View(blob);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var blob = await _blobProvider.Blob(id);
+            Guid? parent = blob.ParentId == Guid.Empty ? null : blob.ParentId;
+
+            //figured the responsibillity to delete all files was in the services
+            //if (blob is IFolder)
+            //{
+            //    var children = await _blobProvider.GetChildren(id);
+            //    var files = children.Where(x => x is not IFolder);
+
+            //    var listOfTasks = new List<Task>();
+            //    foreach (var file in files)
+            //    {
+            //        listOfTasks.Add(_filestore.Delete(await _blobProvider.GetPath(file.Id)));
+            //        listOfTasks.Add(_blobProvider.DeleteBlob(id));
+            //    }
+
+            //    foreach (var folder in children.Where(x=>x is IFolder))
+            //        listOfTasks.Add(_blobProvider.DeleteBlob(id));
+
+            //    await Task.WhenAll(listOfTasks);
+            //    await _blobProvider.DeleteBlob(id);
+            //} 
+            //else
+            //{
+            //    await _filestore.Delete(await _blobProvider.GetPath(id));
+            //    await _blobProvider.DeleteBlob(id);
+            //}
+
+
+            await _filestore.Delete(await _blobProvider.GetPath(id));
+            await _blobProvider.DeleteBlob(id);
+
+            return RedirectToAction("index", new {folderId=parent});
+        }
     }
 }
