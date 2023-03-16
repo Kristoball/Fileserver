@@ -19,15 +19,14 @@ public class BlobProvider : IBlobProvider
 
     public async Task<IEnumerable<IBlob>> Blobs(Guid? parentFolder = null)
     {
-        var user = await _authenticationStateProvider.GetClaimsPrincipal();
-        var userId = new Guid(user.Claims.First(x => x.Type == ClaimTypes.Sid).Value);
+        var userId = await _authenticationStateProvider.GetId();
         if (parentFolder != null)
         {
             return await Task.FromResult(_blobs.Where(x => x.ParentId == parentFolder));
         }
 
         return await Task.FromResult(
-            _blobs.Where(x => x is IFolder && (x as IFolder)?.OwnerUserId == userId));
+            _blobs.Where(x => x is IFolder && (x as IFolder)?.OwnerUserId == userId && x.ParentId == Guid.Empty));
     }
 
     public async Task<IBlob> AddBlob(IBlob folder)
@@ -76,7 +75,7 @@ public class BlobProvider : IBlobProvider
             blob = _blobs.First(x => x.Id == blob).ParentId;
         }
 
-        path = (await _authenticationStateProvider.GetClaimsPrincipal()).Claims.First(x => x.Type == ClaimTypes.Sid).Value + path;
+        path = (await _authenticationStateProvider.GetId()) + path;
 
         return path;
     }

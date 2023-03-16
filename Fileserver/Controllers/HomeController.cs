@@ -41,8 +41,8 @@ namespace Fileserver.Controllers
         public async Task<IActionResult> AddFolder(string folderName, string password, Guid parentFolder)
         {
             var user = await _authenticationStateProvider.GetClaimsPrincipal();
-            var userId = new Guid(user.Claims.First(x => x.Type == ClaimTypes.Sid).Value);
-            var folder = await _blobProvider.AddBlob(new Folder(folderName, _hashingAlgorithm.HashString(password), userId, parentFolder, user.Identity.Name));
+            var userId = await _authenticationStateProvider.GetId();
+            var folder = await _blobProvider.AddBlob(new Folder(folderName, _hashingAlgorithm.HashString(password), userId.Value, parentFolder, user.Identity.Name));
             
             return RedirectToAction("Index", new { folderId = folder.Id});
         }

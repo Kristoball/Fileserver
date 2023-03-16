@@ -54,6 +54,13 @@ public class AuthenticationStateProvider : IAuthenticationStateProvider
         await _contextAccessor.HttpContext.SignOutAsync();
     }
 
+    public async Task<Guid?> GetId()
+    {
+        if(_contextAccessor.HttpContext.User.Identity?.IsAuthenticated ?? false)
+            return await Task.FromResult(Guid.Parse(_contextAccessor.HttpContext.User.Claims.SingleOrDefault(x=>x.Type == ClaimTypes.Sid)?.Value));
+        return null;
+    }
+
     internal class SessionIdentity
     {
         public string Email { get; set; }

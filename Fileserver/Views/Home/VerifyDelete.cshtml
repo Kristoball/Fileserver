@@ -4,7 +4,6 @@
 @inject IAuthenticationStateProvider authProvider
 @{
     Layout = "_Layout";
-    var user = await authProvider.GetClaimsPrincipal();
 }
 
 <div class="w-75 ml-auto mr-auto card">
