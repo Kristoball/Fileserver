@@ -7,12 +7,12 @@ Use cases:
 
 ## To implement:
 - [x] ~~Login~~
-- [ ] Register
+- [x] ~~Register~~
 - [ ] Role based access
 - [x] ~~Possibillity to create a folder~~
-- [ ] Possibillity to set a password for fileupload by unauthenticated users or authenticated users that is now the admin profile of the folder
+- [ ] Possibillity to set a password for fileupload by unauthenticated users
 - [x] ~~Upload files~~
-- [ ] Delete files
+- [x] ~~Delete files~~
 - [x] ~~Download files~~
 - [x] ~~Preview files (partially)~~
 
